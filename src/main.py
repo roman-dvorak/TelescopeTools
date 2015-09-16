@@ -39,8 +39,13 @@ class MainWindow(QtGui.QMainWindow):
     def __init__(self, arg, app):
         super(QtGui.QMainWindow, self).__init__(arg)
 
+        self.LoadedExtensions = []
+        self.AvialibleExtensions = []
+        self.ExtensionsClass = {}
+        self.Extensions = {}
+
         self.manager = PluginManager()
-        self.manager.setPluginPlaces(["plugins"])
+        self.manager.setPluginPlaces(["extensions"])
         self.manager.collectPlugins()
 
         self.extension = ExtensionAdmin()

@@ -46,24 +46,44 @@ class PluginMngr(QtGui.QDialog):
         self.setLayout(vbox)
         self.show()
 
-        for plugin in manager.getAllPlugins():
-            item = QtGui.QStandardItem(plugin.name)#self.manager.activatePluginByName(plugin.name)
-            self.treemodelA.appendRow(item)            #def NewExtension(self, type = 0, class = None, Name = None, UserName = None, Loaded = False):
-            try:
-                self.manager.activatePluginByName(plugin.name)
-            except Exception, e:
-                raise e
+        self.ExtensionsClass = {}
+        self.ExtensionsClassNames = []
+        self.ExtensionsClassToLoad = {}
 
-        self.treeviewB.clicked.connect(self.PluginAdd)
+        for plugin in manager.getAllPlugins():
+            print plugin
+            item = QtGui.QStandardItem(plugin.plugin_object.name)
+            self.treemodelA.appendRow(item)
+            self.ExtensionsClass[plugin.plugin_object.name] = (plugin.plugin_object)
+            self.ExtensionsClassNames.append(plugin.plugin_object.name)
+
+        #self.treeviewA.clicked.connect(lambda: self.PluginAdd())
+        #self.treeviewA.doubleclicked.connect(lambda: self.PluginAdd())
         AddButton.clicked.connect(lambda: self.PluginAdd(type=1))
         RemButton.clicked.connect(lambda: self.PluginAdd(type=2))
+        okButton.clicked.connect(lambda: self.save())
 
     def PluginAdd(self, item = None, type = None):
         print "aaaaa", item, type
         if type == 1:
-            print "add", self.treeviewA.selectedIndexes()
-            #self.parent.extension.NewExtension(None, 0, plugin.name, "test", False)
-            self.parent.MainTabs.addTab(ProjectTab(self.parent), "ahok")
+            row = self.treeviewA.selectedIndexes()[0].row()
+            print self.ExtensionsClass[self.ExtensionsClassNames[row]].getName()
+            self.ExtensionsClassToLoad[self.ExtensionsClass[self.ExtensionsClassNames[row]].name] = self.ExtensionsClass[self.ExtensionsClassNames[row]]
+
 
         if type == 2:
             print "rem", self.treeviewB.selectedIndexes()
+
+        #self.treeviewB.clear()
+        for name in self.ExtensionsClassToLoad:
+            item = QtGui.QStandardItem(self.ExtensionsClass[name].name)
+            self.treemodelB.appendRow(item)
+
+
+
+    def save(self):
+        for x in self.ExtensionsClassToLoad:
+            print x, ": ", self.ExtensionsClass[x]
+            self.parent.MainTabs.addTab(self.ExtensionsClass[x].show(), str(x))
+
+
