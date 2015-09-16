@@ -23,6 +23,7 @@ class ProjectTab(QtGui.QWidget):
         btOpenProject = QtGui.QPushButton("Open")
         btNewProject = QtGui.QPushButton("New")
         btSaveProject = QtGui.QPushButton("Save")
+        btSaveProject = QtGui.QPushButton("Extension manager")
         General.addWidget(laImage)
         General.addWidget(QtGui.QLabel("Project:"))
         General.addWidget(btOpenProject)
@@ -33,12 +34,12 @@ class ProjectTab(QtGui.QWidget):
 
         ProjectGroup = QtGui.QGroupBox("MyProject")
         Project = QtGui.QVBoxLayout(self)
-        Project.addWidget(QtGui.QLabel("ahoj",self))
+        Project.addWidget(QtGui.QLabel("Project",self))
         ProjectGroup.setLayout(Project)
 
         AbouteGroup = QtGui.QGroupBox("Aboute system")
         Aboute = QtGui.QVBoxLayout(self)
-        Aboute.addWidget(QtGui.QLabel("Aboute",self))
+        Aboute.addWidget(QtGui.QLabel("system",self))
         AbouteGroup.setLayout(Aboute)
 
         self.content.addWidget(GeneralGroup)
