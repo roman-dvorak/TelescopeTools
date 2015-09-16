@@ -1,180 +1,113 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import wx
+#from qt import *
+from PyQt4 import QtCore, QtGui
 from yapsy.PluginManager import PluginManager
+import projectFrame
 import logging
+import sys
+from PluginMngr import *
+from ProjectTab import *
 #logging.basicConfig(level=logging.DEBUG)
 logging.basicConfig(level=logging.ERROR)
 log = logging.getLogger('yapsy')
 
-class NonePlugin(wx.Panel):
-    def __init__(self, parent):
-        wx.Panel.__init__(self, parent)
-        t = wx.StaticText(self, -1, "Plugin is not exist", (40,40))
 
-
-class MainFrame(wx.Frame):
-
+class ExtensionAdmin(object):
     def __init__(self):
-        #wx.Frame.__init__(self, None, title="Telescope tools", size=(300,200))
-        self.loaders = []
-        self.aligments = []
-        self.pointers = []
-        self.mounts = []
-        self.cameras = []
-        self.workers = []
-        self.exporters = []
+        self.ExtensionId = []
+        self.ExtensionType = []
+        self.ExtensionClass = []
+        self.ExtensionName = []
+        self.ExtensionUserName = []
+        self.ExtensionLoaded = []
+
+    def NewExtension(self, Type = 0, Class = None, Name = None, UserName = None, Loaded = False):
+        self.ExtensionId.append(len(self.ExtensionId)+1)
+        self.ExtensionType.append(Type)
+        self.ExtensionClass.append(Class)
+        self.ExtensionName.append(Name)
+        self.ExtensionUserName.append(UserName)
+        self.ExtensionLoaded.append(Loaded)
+
+    def GetByID(self, id):
+        return(self.ExtensionType[id],self.ExtensionClass[id],self.ExtensionName[id],self.ExtensionUserName[id],self.ExtensionLoaded[id])
+
+
+class MainWindow(QtGui.QMainWindow):
+    def __init__(self, arg, app):
+        super(QtGui.QMainWindow, self).__init__(arg)
 
         self.manager = PluginManager()
         self.manager.setPluginPlaces(["plugins"])
         self.manager.collectPlugins()
 
-        print "Available plugins",
-        for plugin in self.manager.getAllPlugins():
-            self.manager.activatePluginByName(plugin.name)
-            print plugin.name, ", ",
-            type = plugin.plugin_object.getType()
-            if type == 1:
-                self.loaders.append(plugin.name)
-            if type == 2:
-                self.aligments.append(plugin.name)
-            if type == 3:
-                self.pointers.append(plugin.name)
-            if type == 4:
-                self.mounts.append(plugin.name)
-            if type == 5:
-                self.cameras.append(plugin.name)
-            if type == 6:
-                self.workers.append(plugin.name)
-            if type == 7:
-                self.exporters.append(plugin.name)
+        self.extension = ExtensionAdmin()
 
+        self.setWindowTitle("TelescopeTools")
+        self.setMinimumWidth(400)
+        self.setMinimumHeight(400)
+        self.resizeEvent = self.onResize
+        self.setGeometry(QtCore.QRect(20, 40, 601, 501))
+        app_icon = QtGui.QIcon()
+        app_icon.addFile('media/icon.png', QtCore.QSize(48,48))
+    #   app_icon.addFile('gui/icons/24x24.png', QtCore.QSize(24,24))
+    #   app_icon.addFile('gui/icons/32x32.png', QtCore.QSize(32,32))
+    #   app_icon.addFile('gui/icons/48x48.png', QtCore.QSize(48,48))
+    #   app_icon.addFile('gui/icons/256x256.png', QtCore.QSize(256,256))
+        app.setWindowIcon(app_icon)
 
-    def Display(self, title):
-        wx.Frame.__init__(self, None, title=title, size=(800,600))
-        #self.control = wx.TextCtrl(self, style=wx.TE_MULTILINE)
-        self.CreateStatusBar()
+        self.statusBar()
 
-        filemenu = wx.Menu()
-        filemenu.Append(wx.ID_NEW,"C&reate project"," Create new project ")
-        filemenu.Append(wx.ID_OPEN,"O&pen"," Open project ")
-        filemenu.AppendSeparator()
-        filemenu.Append(wx.ID_EXIT,"E&xit"," Terminate the program")
-        self.Bind(wx.EVT_BUTTON, self.OnClicked)
+        #palette = QtGui.QPalette()
+        #palette.setColor(QtGui.QPalette.Background,QtCore.Qt.red)
+        #self.setPalette(palette)
 
-        helpmenu = wx.Menu()
-        helpmenu.Append(wx.ID_ABOUT, "&About"," Information about this program")
-        
-        self.loadermenu = wx.Menu()
-        for loaderName in self.loaders:
-            loader = self.manager.getPluginByName(loaderName)
-            self.loadermenu.AppendRadioItem(wx.NewId(), loader.plugin_object.getUserName(), "")
+        menubar = self.menuBar()
+        fileMenu = menubar.addMenu('&File')
+        fileMenu.addAction(self.MenuItemPluginsMng())
+        fileMenu.addAction(self.MenuItemExitApp())
 
-        self.aligmentmenu = wx.Menu()
-        for loaderName in self.aligments:
-            loader = self.manager.getPluginByName(loaderName)
-            self.aligmentmenu.AppendRadioItem(wx.NewId(), loader.plugin_object.getUserName(), "")
+        MainLayout = QtGui.QHBoxLayout(self)
+        self.MainTabs=QtGui.QTabWidget(self)
+        self.MainTabs.setEnabled(True)
+        self.MainTabs.setTabPosition(QtGui.QTabWidget.North)
+        self.MainTabs.addTab(ProjectTab(self),"Project")
 
-        self.pointermenu = wx.Menu()
-        for loaderName in self.pointers:
-            loader = self.manager.getPluginByName(loaderName)
-            self.pointermenu.AppendRadioItem(wx.NewId(), loader.plugin_object.getUserName(), "")
+        testBT = QtGui.QPushButton("ahoj")
 
-        self.mountmenu = wx.Menu()
-        for loaderName in self.mounts:
-            loader = self.manager.getPluginByName(loaderName)
-            self.mountmenu.AppendRadioItem(wx.NewId(), loader.plugin_object.getUserName(), "")
+        MainLayout.addWidget(self.MainTabs,1)
+        self.setLayout(MainLayout)
+        self.show()
 
-        self.cameramenu = wx.Menu()
-        for loaderName in self.cameras:
-            loader = self.manager.getPluginByName(loaderName)
-            self.cameramenu.AppendRadioItem(wx.NewId(), loader.plugin_object.getUserName(), "")
-            
-        self.workermenu = wx.Menu()
-        for loaderName in self.workers:
-            loader = self.manager.getPluginByName(loaderName)
-            self.workermenu.AppendRadioItem(wx.NewId(), loader.plugin_object.getUserName(), "")
-            
-        self.exportmenu = wx.Menu()
-        for loaderName in self.exporters:
-            loader = self.manager.getPluginByName(loaderName)
-            self.exportmenu.AppendRadioItem(wx.NewId(), loader.plugin_object.getUserName(), "")
-            
-        self.menuBar = wx.MenuBar()
-        self.menuBar.Append(filemenu,"&File")
-        self.menuBar.Append(self.loadermenu,"&Loader")
-        self.menuBar.Append(self.aligmentmenu,"&Aligment")
-        self.menuBar.Append(self.pointermenu,"&Pointer")
-        self.menuBar.Append(self.mountmenu,"&Mount")
-        self.menuBar.Append(self.cameramenu,"&Camera")
-        self.menuBar.Append(self.workermenu,"&Processor")
-        self.menuBar.Append(self.exportmenu,"&Export")
-        self.menuBar.Append(helpmenu,"&Help")
-        self.SetMenuBar(self.menuBar)
+    def MenuItemExitApp(self):
+        Item = QtGui.QAction(QtGui.QIcon(''), '&Exit', self)
+        Item.setShortcut('Ctrl+Q')
+        Item.setStatusTip('Exit application')
+        Item.triggered.connect(QtGui.qApp.quit)
+        return Item
 
-        self.Bind(wx.EVT_MENU, self.OnClicked, id=wx.ID_NEW)
-        self.Bind(wx.EVT_MENU, self.OnClicked, id=wx.ID_OPEN)
-        self.Bind(wx.EVT_MENU, self.OnAbout, id=wx.ID_ABOUT)
-        wx.EVT_MENU(self, wx.ID_EXIT, self.Exit)
+    def MenuItemPluginsMng(self):
+        print self
+        Item = QtGui.QAction(QtGui.QIcon(''), '&Plugins', self)
+        Item.setShortcut('Ctrl+M')
+        Item.setStatusTip('Open plugin manager')
+        Item.triggered.connect(lambda: PluginMngr(self.manager, self))
+        return Item
 
-
-        self.notebook = wx.Notebook(self, -1, style=wx.NB_LEFT)
-
-
-        self.backgroundProject =  wx.BoxSizer(wx.HORIZONTAL)
-        self.backgroundLoader  =  wx.BoxSizer(wx.HORIZONTAL)
-        self.backgroundAligment = wx.BoxSizer(wx.HORIZONTAL)
-        self.backgroundPointer =  wx.BoxSizer(wx.HORIZONTAL)
-        self.backgroundMount  =   wx.BoxSizer(wx.HORIZONTAL)
-        self.backgroundCamera  =  wx.BoxSizer(wx.HORIZONTAL)
-        self.backgroundProcessor =wx.BoxSizer(wx.HORIZONTAL)
-        self.backgroundExport  =  wx.BoxSizer(wx.HORIZONTAL)
-
-        '''
-        self.notebook.AddPage(NonePlugin, "Project", select=False)
-        self.notebook.AddPage(NonePlugin, "Loader", select=False)
-        self.notebook.AddPage(NonePlugin, "Aligment", select=True)
-        self.notebook.AddPage(NonePlugin, "Pointer", select=False)
-        self.notebook.AddPage(NonePlugin, "Mount", select=False)
-        self.notebook.AddPage(NonePlugin, "Camera", select=False)
-        self.notebook.AddPage(NonePlugin, "Processor", select=False)
-        self.notebook.AddPage(NonePlugin, "Export", select=False)
-        '''
-
-        wx.EVT_MENU(self, 5006, self.Exit)
-        
-
-    def OnClicked(self, event):
-        print event, event.GetId()
-
-    def OnAbout(self, event):
-        print "about"
-        dlg = wx.MessageDialog(self, 'TelescopeTools, Roman Dvořák', 'Aboute', wx.OK|wx.ICON_INFORMATION)
-        dlg.ShowModal()
-        dlg.Destroy()
-
-    def Exit(self, event):
-        print "exit", event, event.GetId(), event
-        self.Close()
+    def  onResize(self, widget):
+        self.MainTabs.setGeometry(2, 2, widget.size().width()-5, widget.size().height()-25)
+        print 2, 2, widget.size().height()-2, widget.size().width()-2
 
 class TelescopeTools(object):
     def __init__(self, arg):
-        self.arg = arg
-
-    def init(self):
-        self.app = wx.App(False)
-        self.frame = MainFrame()
-        self.frame.Display("Ahoj")
-        self.frame.Show(True)
-        self.app.MainLoop()
-
-
-    def show(self):
-        pass
+        app = QtGui.QApplication(sys.argv)
+        mWindow = MainWindow(arg, app)
+        sys.exit(app.exec_())
         
 
 def  main():
     TT = TelescopeTools(None)
-    TT.init()
+    #TT.init()
    # TT.show()
