@@ -9,8 +9,8 @@ import logging
 import sys
 from PluginMngr import *
 from ProjectTab import *
-#logging.basicConfig(level=logging.DEBUG)
-logging.basicConfig(level=logging.ERROR)
+logging.basicConfig(level=logging.DEBUG)
+#logging.basicConfig(level=logging.ERROR)
 log = logging.getLogger('yapsy')
 
 

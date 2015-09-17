@@ -70,7 +70,6 @@ class PluginMngr(QtGui.QDialog):
             print self.ExtensionsClass[self.ExtensionsClassNames[row]].getName()
             self.ExtensionsClassToLoad[self.ExtensionsClass[self.ExtensionsClassNames[row]].name] = self.ExtensionsClass[self.ExtensionsClassNames[row]]
 
-
         if type == 2:
             print "rem", self.treeviewB.selectedIndexes()
 
@@ -80,10 +79,16 @@ class PluginMngr(QtGui.QDialog):
             self.treemodelB.appendRow(item)
 
 
-
     def save(self):
         for x in self.ExtensionsClassToLoad:
             print x, ": ", self.ExtensionsClass[x]
-            self.parent.MainTabs.addTab(self.ExtensionsClass[x].show(), str(x))
+            self.parent.MainTabs.addTab(self.ExtensionsClass[x].show(self.parent), str(x))
+        self.close()
 
+        '''
+        w = QtGui.QWidget()
+        palette = QtGui.QPalette()
+        palette.setColor(QtGui.QPalette.Background,QtCore.Qt.red)
+        w.setPalette(palette)
+        '''
 
