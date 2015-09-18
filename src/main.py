@@ -104,6 +104,8 @@ class MainWindow(QtGui.QMainWindow):
     def  onResize(self, widget):
         self.MainTabs.setGeometry(2, 2, widget.size().width()-5, widget.size().height()-25)
         print 2, 2, widget.size().height()-2, widget.size().width()-2
+        for x in self.Extensions:
+            self.Extensions[x].win.resize(widget.size().width()-5, widget.size().height()-25)
 
 class TelescopeTools(object):
     def __init__(self, arg):

@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from PyQt4 import QtCore, QtGui
+import logging
 
 class PluginMngr(QtGui.QDialog):
     def __init__(self, manager, parent = None):
@@ -83,6 +84,7 @@ class PluginMngr(QtGui.QDialog):
         for x in self.ExtensionsClassToLoad:
             print x, ": ", self.ExtensionsClass[x]
             self.parent.MainTabs.addTab(self.ExtensionsClass[x].show(self.parent), str(x))
+            self.parent.Extensions[x] = self.ExtensionsClass[x]
         self.close()
 
         '''
