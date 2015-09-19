@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from PyQt4 import QtCore, QtGui
+from PluginMngr import *
 
 
 class ProjectTab(QtGui.QWidget):
@@ -24,6 +25,7 @@ class ProjectTab(QtGui.QWidget):
         btNewProject = QtGui.QPushButton("New")
         btSaveProject = QtGui.QPushButton("Save")
         btExtensionManager = QtGui.QPushButton("Extension manager")
+        btExtensionManager.clicked.connect(lambda: PluginMngr(parent.manager, parent))
         General.addWidget(laImage)
         General.addWidget(QtGui.QLabel("Project:"))
         General.addWidget(btOpenProject)

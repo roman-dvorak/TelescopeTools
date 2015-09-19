@@ -1,0 +1,28 @@
+QWidget {
+	background-color: #850505;
+	color: #FF1010;
+}
+
+QSpinBox{
+	background: #600303;
+}
+
+QCheckBox::indicator{
+	background-color: #600303;
+}
+
+QCheckBox::indicator:checked{
+	background-color: #aa1010;
+}
+
+QLineEdit{
+	background: #600303;
+}
+
+QPushButton:hover{
+	background: #600303;
+}
+
+QPushButton:hover{
+		color: white;
+}

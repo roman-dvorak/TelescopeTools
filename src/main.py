@@ -110,6 +110,9 @@ class MainWindow(QtGui.QMainWindow):
 class TelescopeTools(object):
     def __init__(self, arg):
         app = QtGui.QApplication(sys.argv)
+        sshFile="media/night.style"
+        with open(sshFile,"r") as fh:
+            app.setStyleSheet(fh.read())
         mWindow = MainWindow(arg, app)
         sys.exit(app.exec_())
         
