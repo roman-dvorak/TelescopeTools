@@ -54,7 +54,7 @@ class MainWindow(QtGui.QMainWindow):
         self.setMinimumWidth(400)
         self.setMinimumHeight(400)
         self.resizeEvent = self.onResize
-        self.setGeometry(QtCore.QRect(20, 40, 601, 501))
+        self.setGeometry(QtCore.QRect(20, 40, 950, 700))
         app_icon = QtGui.QIcon()
         app_icon.addFile('media/icon.png', QtCore.QSize(48,48))
     #   app_icon.addFile('gui/icons/24x24.png', QtCore.QSize(24,24))
