@@ -48,34 +48,45 @@ class PluginMngr(QtGui.QDialog):
         self.show()
 
         self.ExtensionsClass = {}
-        self.ExtensionsClassNames = []
+        #self.ExtensionsClassNames = []
         self.ExtensionsClassToLoad = {}
+        self.ExtensionsClassLoaded = {}
+        self.ExtensionsClassLoaded = self.parent.Extensions
 
-        for plugin in manager.getAllPlugins():
-            print plugin
+        for plugin in self.manager.getAllPlugins():
+            print "Exists: ", plugin
             item = QtGui.QStandardItem(plugin.plugin_object.name)
             self.treemodelA.appendRow(item)
             self.ExtensionsClass[plugin.plugin_object.name] = (plugin.plugin_object)
-            self.ExtensionsClassNames.append(plugin.plugin_object.name)
 
-        #self.treeviewA.clicked.connect(lambda: self.PluginAdd())
-        #self.treeviewA.doubleclicked.connect(lambda: self.PluginAdd())
+        for index in self.ExtensionsClassLoaded:
+            print "Loaded: ",plugin
+            plugin = self.ExtensionsClassLoaded[index]
+            item = QtGui.QStandardItem(plugin.name)
+            self.treemodelB.appendRow(item)
+
         AddButton.clicked.connect(lambda: self.PluginAdd(type=1))
         RemButton.clicked.connect(lambda: self.PluginAdd(type=2))
         okButton.clicked.connect(lambda: self.save())
 
     def PluginAdd(self, item = None, type = None):
-        print "aaaaa", item, type
         if type == 1:
-            row = self.treeviewA.selectedIndexes()[0].row()
-            print self.ExtensionsClass[self.ExtensionsClassNames[row]].getName()
-            self.ExtensionsClassToLoad[self.ExtensionsClass[self.ExtensionsClassNames[row]].name] = self.ExtensionsClass[self.ExtensionsClassNames[row]]
+            row = self.treeviewA.selectedIndexes()[0].row()                                         # vybrany radek v QListView
+            index = self.manager.getAllPlugins()[row]                                               # YAPSY trida s rozsirenim
+            # print "00A:", row, index, index.name, index.plugin_object.name #####>>> 0 <yapsy.PluginInfo.PluginInfo object at 0x7fa999420110> RA_HBSTEP_driver MLAB RA driver
+            self.ExtensionsClassToLoad[index.plugin_object.name] = index
 
         if type == 2:
-            print "rem", self.treeviewB.selectedIndexes()
+            row = self.treeviewB.selectedIndexes()[0].row()
+            index = self.ExtensionsClassLoaded[row]
+            print "2>00A", row, index, index.name, index.plugin_object.name
+            self.ExtensionsClassToLoad.pop(index.plugin_object.name)
 
-        #self.treeviewB.clear()
+        self.treemodelB.clear()
         for name in self.ExtensionsClassToLoad:
+            item = QtGui.QStandardItem(self.ExtensionsClass[name].name)
+            self.treemodelB.appendRow(item)
+        for name in self.ExtensionsClassLoaded:
             item = QtGui.QStandardItem(self.ExtensionsClass[name].name)
             self.treemodelB.appendRow(item)
 
@@ -86,11 +97,3 @@ class PluginMngr(QtGui.QDialog):
             self.parent.MainTabs.addTab(self.ExtensionsClass[x].show(self.parent), str(x))
             self.parent.Extensions[x] = self.ExtensionsClass[x]
         self.close()
-
-        '''
-        w = QtGui.QWidget()
-        palette = QtGui.QPalette()
-        palette.setColor(QtGui.QPalette.Background,QtCore.Qt.red)
-        w.setPalette(palette)
-        '''
-

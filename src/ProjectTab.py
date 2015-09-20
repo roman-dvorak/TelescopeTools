@@ -26,6 +26,8 @@ class ProjectTab(QtGui.QWidget):
         btSaveProject = QtGui.QPushButton("Save")
         btExtensionManager = QtGui.QPushButton("Extension manager")
         btExtensionManager.clicked.connect(lambda: PluginMngr(parent.manager, parent))
+        btFullScreen = QtGui.QPushButton("Full screen")
+        btFullScreen.clicked.connect(parent.ToggleFS)
         General.addWidget(laImage)
         General.addWidget(QtGui.QLabel("Project:"))
         General.addWidget(btOpenProject)
@@ -33,6 +35,7 @@ class ProjectTab(QtGui.QWidget):
         General.addWidget(btSaveProject)
         General.addStretch(1)
         General.addWidget(btExtensionManager)
+        General.addWidget(btFullScreen)
         GeneralGroup.setLayout(General)
 
         ProjectGroup = QtGui.QGroupBox("MyProject")
@@ -44,6 +47,9 @@ class ProjectTab(QtGui.QWidget):
         Aboute = QtGui.QVBoxLayout(self)
         Aboute.addWidget(QtGui.QLabel("system",self))
         AbouteGroup.setLayout(Aboute)
+
+       # btn = QtGui.QPushButton("Ahoj Tlacitko")
+       # Nbx = QtGui.Q
 
         self.content.addWidget(GeneralGroup)
         self.content.addWidget(ProjectGroup)

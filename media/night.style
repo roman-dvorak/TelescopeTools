@@ -7,14 +7,28 @@ QSpinBox{
 	background: #600303;
 }
 
-QCheckBox::indicator{
-	background-color: #600303;
+QCheckBox::indicator:unchecked{
+	background-color: #700303;
+	image: url(media/NightStyle/unchecked.png);
+	border: 1px 1px 1px 1px solid black;
+  	border: solid 2px;
 }
 
 QCheckBox::indicator:checked{
-	background-color: #aa1010;
+	background-color: #700303;
+	image: url(media/NightStyle/checked.png);
+  	border: solid 2px;
 }
 
+QCheckBox::indicator:checked#ChbLR{
+	background-color: #850505;
+	image: url(media/NightStyle/ChbLR-L.png);
+}
+
+QCheckBox::indicator:unchecked#ChbLR{
+	background-color: #850505;
+	image: url(media/NightStyle/ChbLR-R.png);
+}
 QLineEdit{
 	background: #600303;
 }
@@ -25,4 +39,29 @@ QPushButton:hover{
 
 QPushButton:hover{
 		color: white;
+}
+
+QPushButton#BtTransPause{
+	image: url(media/NightStyle/icPause.png);
+
+}
+QPushButton#BtTransPlay{
+	image: url(media/NightStyle/icPlay.png);
+	
+}
+QPushButton#BtTransFFW{
+	image: url(media/NightStyle/icFFW.png);
+	
+}
+QPushButton#BtTransFBW{
+	image: url(media/NightStyle/icFBW.png);
+	
+}
+
+QPushButton.BtnTimeStop{
+	background: #aa1010;
+}
+
+QPushButton.BtnTimeStart{
+	background: #10aa10;
 }

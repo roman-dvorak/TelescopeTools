@@ -9,8 +9,8 @@ import logging
 import sys
 from PluginMngr import *
 from ProjectTab import *
-logging.basicConfig(level=logging.DEBUG)
-#logging.basicConfig(level=logging.ERROR)
+#logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.ERROR)
 log = logging.getLogger('yapsy')
 
 
@@ -33,6 +33,7 @@ class ExtensionAdmin(object):
 
     def GetByID(self, id):
         return(self.ExtensionType[id],self.ExtensionClass[id],self.ExtensionName[id],self.ExtensionUserName[id],self.ExtensionLoaded[id])
+
 
 
 class MainWindow(QtGui.QMainWindow):
@@ -86,6 +87,12 @@ class MainWindow(QtGui.QMainWindow):
         self.setLayout(MainLayout)
         self.show()
 
+    def ToggleFS(self):
+        if self.windowState() & QtCore.Qt.WindowFullScreen:
+            self.showNormal()
+        else:
+            self.showFullScreen()
+
     def MenuItemExitApp(self):
         Item = QtGui.QAction(QtGui.QIcon(''), '&Exit', self)
         Item.setShortcut('Ctrl+Q')
@@ -105,7 +112,8 @@ class MainWindow(QtGui.QMainWindow):
         self.MainTabs.setGeometry(2, 2, widget.size().width()-5, widget.size().height()-25)
         print 2, 2, widget.size().height()-2, widget.size().width()-2
         for x in self.Extensions:
-            self.Extensions[x].win.resize(widget.size().width()-5, widget.size().height()-25)
+            print " e:", x, self.Extensions[x], self.Extensions[x].name
+            self.Extensions[x].scrollArea.resize(widget.size().width()-5, widget.size().height()-5)
 
 class TelescopeTools(object):
     def __init__(self, arg):
