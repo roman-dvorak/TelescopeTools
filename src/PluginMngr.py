@@ -74,7 +74,14 @@ class PluginMngr(QtGui.QDialog):
             row = self.treeviewA.selectedIndexes()[0].row()                                         # vybrany radek v QListView
             index = self.manager.getAllPlugins()[row]                                               # YAPSY trida s rozsirenim
             # print "00A:", row, index, index.name, index.plugin_object.name #####>>> 0 <yapsy.PluginInfo.PluginInfo object at 0x7fa999420110> RA_HBSTEP_driver MLAB RA driver
-            self.ExtensionsClassToLoad[index.plugin_object.name] = index
+            number = 1
+            if index.plugin_object.name in self.ExtensionsClassToLoad:
+                print "Jednou to tam uz je.."
+                while index.plugin_object.name+str(number) in self.ExtensionsClassToLoad:
+                    number += 1
+                self.ExtensionsClassToLoad[index.plugin_object.name+str(number)] = index
+            else:
+                self.ExtensionsClassToLoad[index.plugin_object.name] = index
 
         if type == 2:
             row = self.treeviewB.selectedIndexes()[0].row()

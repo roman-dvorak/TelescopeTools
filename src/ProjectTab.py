@@ -8,6 +8,7 @@ from PluginMngr import *
 class ProjectTab(QtGui.QWidget):
     def __init__(self, parent):
         super(ProjectTab, self).__init__()
+        self.parent = parent
         self.horizontalLayout = QtGui.QVBoxLayout(self)
         self.scrollArea = QtGui.QScrollArea(self)
         self.scrollArea.setWidgetResizable(True)
@@ -25,9 +26,7 @@ class ProjectTab(QtGui.QWidget):
         btNewProject = QtGui.QPushButton("New")
         btSaveProject = QtGui.QPushButton("Save")
         btExtensionManager = QtGui.QPushButton("Extension manager")
-        btExtensionManager.clicked.connect(lambda: PluginMngr(parent.manager, parent))
         btFullScreen = QtGui.QPushButton("Full screen")
-        btFullScreen.clicked.connect(parent.ToggleFS)
         General.addWidget(laImage)
         General.addWidget(QtGui.QLabel("Project:"))
         General.addWidget(btOpenProject)
@@ -55,3 +54,19 @@ class ProjectTab(QtGui.QWidget):
         self.content.addWidget(ProjectGroup)
         self.content.addWidget(AbouteGroup)
         self.content.addStretch(1)
+
+        btExtensionManager.clicked.connect(lambda: PluginMngr(parent.manager, parent))
+        btOpenProject.clicked.connect(lambda: self.ProjectFile("open"))
+        btNewProject.clicked.connect(lambda: self.ProjectFile("new"))
+        btFullScreen.clicked.connect(parent.ToggleFS)
+
+    def ProjectFile(self, type):
+        if type == "new":
+            #fname = QtGui.QFileDialog.getOpenFileName(self, 'New project file', '/home')
+            fname = QtGui.QFileDialog.getSaveFileName(self, 'Save File', '/home', "TTdata (*.tt *.ttp *.ttd)")
+            f = open(fname, 'r')
+            print f
+            with f:        
+                data = f.read()
+                print data
+                #self.textEdit.setText(data)

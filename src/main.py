@@ -9,6 +9,9 @@ import logging
 import sys
 from PluginMngr import *
 from ProjectTab import *
+import time
+import datetime
+from astropy.time import Time
 #logging.basicConfig(level=logging.DEBUG)
 logging.basicConfig(level=logging.ERROR)
 log = logging.getLogger('yapsy')
@@ -35,10 +38,34 @@ class ExtensionAdmin(object):
         return(self.ExtensionType[id],self.ExtensionClass[id],self.ExtensionName[id],self.ExtensionUserName[id],self.ExtensionLoaded[id])
 
 
+class Communicator(QtCore.QThread):
+    def __init__(self, parent = None):
+        super(Communicator, self).__init__()
+        self.exiting = False
+        self.parent= parent
+
+    def __del__(self):
+        print "Communicator ukoncovani ..."
+        self.exiting = True
+        self.wait()
+
+    def run(self):
+        n = 0
+        while not self.exiting:
+            time.sleep(0.5)
+            try:
+                string = "Local time:" + str(Time.now().iso) + ", Julian date:" + str(Time(datetime.datetime.utcnow(), scale='utc').jd )
+                #self.parent.statusBar.showMessage(string)
+            except Exception, e:
+                print "merrer", e
+        print "Communicator ukoncen"
+
+
 
 class MainWindow(QtGui.QMainWindow):
     def __init__(self, arg, app):
         super(QtGui.QMainWindow, self).__init__(arg)
+        self.mainThread = Communicator(self)
 
         self.LoadedExtensions = []
         self.AvialibleExtensions = []
@@ -64,11 +91,7 @@ class MainWindow(QtGui.QMainWindow):
     #   app_icon.addFile('gui/icons/256x256.png', QtCore.QSize(256,256))
         app.setWindowIcon(app_icon)
 
-        self.statusBar()
-
-        #palette = QtGui.QPalette()
-        #palette.setColor(QtGui.QPalette.Background,QtCore.Qt.red)
-        #self.setPalette(palette)
+        self.statusBar = self.statusBar()
 
         menubar = self.menuBar()
         fileMenu = menubar.addMenu('&File')
@@ -81,11 +104,12 @@ class MainWindow(QtGui.QMainWindow):
         self.MainTabs.setTabPosition(QtGui.QTabWidget.North)
         self.MainTabs.addTab(ProjectTab(self),"Project")
 
-        testBT = QtGui.QPushButton("ahoj")
-
         MainLayout.addWidget(self.MainTabs,1)
         self.setLayout(MainLayout)
         self.show()
+        self.mainThread.start()
+
+
 
     def ToggleFS(self):
         if self.windowState() & QtCore.Qt.WindowFullScreen:
@@ -113,7 +137,10 @@ class MainWindow(QtGui.QMainWindow):
         print 2, 2, widget.size().height()-2, widget.size().width()-2
         for x in self.Extensions:
             print " e:", x, self.Extensions[x], self.Extensions[x].name
-            self.Extensions[x].scrollArea.resize(widget.size().width()-5, widget.size().height()-5)
+            try:
+                self.Extensions[x].scrollArea.resize(widget.size().width()-5, widget.size().height()-5)
+            except Exception, e:
+                self.Extensions[x].contentWidget.resize(widget.size().width()-5, widget.size().height()-5)
 
 class TelescopeTools(object):
     def __init__(self, arg):

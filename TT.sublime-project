@@ -6,6 +6,9 @@
 		},
 		{
 			"path": "."
+		},
+		{
+			"path": "/home/roman/Dokumenty/Projects/TelescopeToolsTests"
 		}
 	]
 }
