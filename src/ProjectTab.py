@@ -3,6 +3,7 @@
 
 from PyQt4 import QtCore, QtGui
 from PluginMngr import *
+import h5py
 
 
 class ProjectTab(QtGui.QWidget):
@@ -63,10 +64,16 @@ class ProjectTab(QtGui.QWidget):
     def ProjectFile(self, type):
         if type == "new":
             #fname = QtGui.QFileDialog.getOpenFileName(self, 'New project file', '/home')
-            fname = QtGui.QFileDialog.getSaveFileName(self, 'Save File', '/home', "TTdata (*.tt *.ttp *.ttd)")
-            f = open(fname, 'r')
-            print f
-            with f:        
-                data = f.read()
-                print data
-                #self.textEdit.setText(data)
+            fname = str(QtGui.QFileDialog.getSaveFileName(self, 'Save File', '/home', "TTdata (*.tt *.ttp *.ttd)"))
+            print fname
+            self.parent.ProjectFile = h5py.File(fname,'a')
+
+        if type == "open":
+            fname = str(QtGui.QFileDialog.getOpenFileName(self, 'New project file', '/home'))
+            #fname = QtGui.QFileDialog.getSaveFileName(self, 'Save File', '/home', "TTdata (*.tt *.ttp *.ttd)")
+            self.parent.ProjectFile = h5py.File(fname,'a')
+
+        if type == "save":
+            fname = str(QtGui.QFileDialog.getOpenFileName(self, 'New project file', '/home'))
+            #fname = QtGui.QFileDialog.getSaveFileName(self, 'Save File', '/home', "TTdata (*.tt *.ttp *.ttd)")
+            self.parent.ProjectFile = h5py.File(fname,'a')

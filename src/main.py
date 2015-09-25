@@ -71,6 +71,7 @@ class MainWindow(QtGui.QMainWindow):
         self.AvialibleExtensions = []
         self.ExtensionsClass = {}
         self.Extensions = {}
+        self.ProjectFile = None
 
         self.manager = PluginManager()
         self.manager.setPluginPlaces(["extensions"])
