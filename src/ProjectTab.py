@@ -59,6 +59,7 @@ class ProjectTab(QtGui.QWidget):
         btExtensionManager.clicked.connect(lambda: PluginMngr(parent.manager, parent))
         btOpenProject.clicked.connect(lambda: self.ProjectFile("open"))
         btNewProject.clicked.connect(lambda: self.ProjectFile("new"))
+        btSaveProject.clicked.connect(lambda: self.ProjectFile("save"))
         btFullScreen.clicked.connect(parent.ToggleFS)
 
     def ProjectFile(self, type):
@@ -69,11 +70,11 @@ class ProjectTab(QtGui.QWidget):
             self.parent.ProjectFile = h5py.File(fname,'a')
 
         if type == "open":
-            fname = str(QtGui.QFileDialog.getOpenFileName(self, 'New project file', '/home'))
+            fname = str(QtGui.QFileDialog.getOpenFileName(self, 'New project file', '/home'), "TTdata (*.tt *.ttp *.ttd)")
             #fname = QtGui.QFileDialog.getSaveFileName(self, 'Save File', '/home', "TTdata (*.tt *.ttp *.ttd)")
             self.parent.ProjectFile = h5py.File(fname,'a')
 
         if type == "save":
-            fname = str(QtGui.QFileDialog.getOpenFileName(self, 'New project file', '/home'))
+            fname = str(QtGui.QFileDialog.getSaveFileName(self, 'New project file', '/home'), "TTdata (*.tt *.ttp *.ttd)")
             #fname = QtGui.QFileDialog.getSaveFileName(self, 'Save File', '/home', "TTdata (*.tt *.ttp *.ttd)")
             self.parent.ProjectFile = h5py.File(fname,'a')
