@@ -16,7 +16,7 @@
    version="1.1"
    inkscape:version="0.48.4 r9939"
    sodipodi:docname="Buttons.svg"
-   inkscape:export-filename="/home/roman/Dokumenty/Projects/TelescopeTools/media/NightStyle/checked.png"
+   inkscape:export-filename="/home/roman/Dokumenty/Projects/TelescopeTools/media/NightStyle/ChbLeftArrow.png"
    inkscape:export-xdpi="129.375"
    inkscape:export-ydpi="129.375">
   <defs
@@ -29,7 +29,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="8"
-     inkscape:cx="5.9866864"
+     inkscape:cx="-14.450814"
      inkscape:cy="29.783296"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -79,7 +79,7 @@
        inkscape:rounded="0"
        inkscape:randomized="0"
        d="m 9.4246604,0.92054302 -12.8675465,7.42908148 0,-14.858163 z"
-       transform="matrix(1.1491023,0,0,0.99515182,-11.747268,1051.6013)"
+       transform="matrix(1.1491023,0,0,0.99515182,-15.122268,1054.4763)"
        inkscape:transform-center-x="-2.4643546" />
     <g
        id="g3775"
@@ -129,7 +129,8 @@
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="sccccccccccccccs" />
     <g
-       id="g3892">
+       id="g3892"
+       transform="translate(-54.75,-2.625)">
       <path
          sodipodi:nodetypes="sccccccccccccccs"
          inkscape:connector-curvature="0"
@@ -143,5 +144,22 @@
          d="m 1.546875,1046.0028 3.5625,4.3125 9.34375,-11.9062"
          style="fill:none;stroke:#000000;stroke-width:0.52999997;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
     </g>
+    <path
+       sodipodi:type="star"
+       style="fill:#990000;fill-opacity:1;stroke:#ffa2a2;stroke-width:0.2;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path2985-3"
+       sodipodi:sides="3"
+       sodipodi:cx="0.84629607"
+       sodipodi:cy="0.92054302"
+       sodipodi:r1="8.5783644"
+       sodipodi:r2="4.2891822"
+       sodipodi:arg1="0"
+       sodipodi:arg2="1.0471976"
+       inkscape:flatsided="true"
+       inkscape:rounded="0"
+       inkscape:randomized="0"
+       d="m 9.4246604,0.92054302 -12.8675465,7.42908148 0,-14.858163 z"
+       transform="matrix(1.1491023,0,0,0.99515182,4.5631644,1043.4461)"
+       inkscape:transform-center-x="-2.4643549" />
   </g>
 </svg>

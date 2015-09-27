@@ -29,6 +29,18 @@ QCheckBox::indicator:unchecked#ChbLR{
 	background-color: #850505;
 	image: url(media/NightStyle/ChbLR-R.png);
 }
+
+QCheckBox::indicator:checked#ChbCollapse{
+	background-color: #850505;
+	image: url(media/NightStyle/ChbLeftArrow.png);
+}
+
+QCheckBox::indicator:unchecked#ChbCollapse{
+	background-color: #850505;
+	image: url(media/NightStyle/ChbRightArrow.png);
+}
+
+
 QLineEdit{
 	background: #600303;
 }
